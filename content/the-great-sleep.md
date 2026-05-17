@@ -49,3 +49,4 @@ A major philosophical challenge to this theory is infinite regression: If we wak
 The belief that we are awake relies entirely on the consistency of our daily lives. However, by analyzing the rules of nightly dreams—specifically the termination protocol triggered by death—we find a logical basis for the theory that reality is simply a dream that hasn't been forced to end yet. What we fear as the end of life may simply be the moment the alarm goes off.
 
 ##### courtesy : help of artificial intelligence was taken for the conclusion and for the fomat of this documentation.
+##### © 2024 Imtiyaz Parvez.
