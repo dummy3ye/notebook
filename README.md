@@ -1,19 +1,19 @@
 # Notebook
 this is `notebook` mainly a kinda jurnal, but for all the stuff
 
-## 1. Stack
+## Stack
 *   **Runtime:** `Bun` (v1.3.14+)
 *   **Framework:** `Next.js` (v16.2.6)
 *   **Styling:** `Tailwind CSS` (v4.3.0)
 *   **Parsers:** `marked` + `front-matter`.
 *   **Math Engine:** `KaTeX`.
 
-## 2. Layout
+## Layout
 *   **Left:** Blank
 *   **Middle:** Chaos
 *   **Layout:** the table of `contents`
 
-## 3. Directory Map
+## Directory Map
 ```text
 notebook/
 ├── content/              # Raw .md
@@ -28,19 +28,12 @@ notebook/
 │   │   └── page.tsx           # Entry point
 │   └── components/            # Reusable UI bits (ThemeToggle, etc).
 ```
----
 
 ## Getting Started
 
 First, run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
 bun dev
 ```
 
