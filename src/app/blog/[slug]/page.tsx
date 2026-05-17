@@ -5,28 +5,8 @@ import { Marked } from "marked";
 import markedKatex from "marked-katex-extension";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-
-// Configure marked with KaTeX extension and custom heading renderer using a dedicated instance
-const markedInstance = new Marked();
-
-markedInstance.use(markedKatex({
-  throwOnError: false,
-  nonStandard: true
-}));
-
-markedInstance.use({
-  renderer: {
-    heading({ tokens, depth, raw }) {
-      const id = raw
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, "")
-        .replace(/\s+/g, "-");
-      
-      const content = this.parser.parseInline(tokens);
-      return `<h${depth} id="${id}">${content}</h${depth}>`;
-    }
-  }
-});
+import TableOfContents from "@/components/TableOfContents";
+import { getHighlighter } from "@/lib/shiki";
 
 interface PostData {
   title: string;
@@ -50,6 +30,7 @@ export async function generateStaticParams() {
 }
 
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+  console.log("BlogPost: Mounting");
   const { slug } = await params;
   const filePath = path.join(process.cwd(), "content", `${slug}.md`);
 
@@ -61,21 +42,57 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   }
 
   const { attributes, body } = fm<PostData>(fileContent);
+
+  // Initialize Highlighter once
+  const highlighter = await getHighlighter();
+  const markedInstance = new Marked();
+
+  markedInstance.use(markedKatex({
+    throwOnError: false,
+    nonStandard: true
+  }));
+
+  // Shared ID generation helper
+  const generateId = (text: string) => text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-");
+
+  markedInstance.use({
+    renderer: {
+      heading({ tokens, depth, raw }) {
+        const text = raw.replace(/[#*`]/g, "").trim();
+        const id = generateId(text);
+        
+        // @ts-expect-error - parser exists on renderer instance
+        const content = this.parser.parseInline(tokens);
+        return `<h${depth} id="${id}">${content}</h${depth}>`;
+      },
+      code({ text, lang }) {
+        const html = highlighter.codeToHtml(text, {
+          lang: lang || "text",
+          themes: {
+            light: "github-light",
+            dark: "github-dark"
+          }
+        });
+        return `<div class="not-prose">${html}</div>`;
+      }
+    }
+  });
+
   const htmlContent = await markedInstance.parse(body);
 
-  // Simple Heading extraction for TOC
+  // Extract headings for TOC (h2-h4)
   const headings: Heading[] = [];
   const lines = body.split("\n");
   lines.forEach((line) => {
-    const match = line.match(/^(#{2,3})\s+(.*)/);
+    const trimmed = line.trim();
+    const match = trimmed.match(/^(#{2,4})\s+(.*)/);
     if (match) {
-      const level = match[1].length;
-      const text = match[2];
-      const id = text
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, "")
-        .replace(/\s+/g, "-");
-      headings.push({ text, level, id });
+      const text = match[2].replace(/[#*`]/g, "").trim();
+      const id = generateId(text);
+      headings.push({ text, level: match[1].length, id });
     }
   });
 
@@ -96,7 +113,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         </aside>
 
         {/* Main Content Column */}
-        <main className="flex-1 max-w-3xl">
+        <main className="flex-1 max-w-3xl overflow-hidden">
           <header className="mb-16">
             <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
               {attributes.title}
@@ -104,14 +121,16 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           </header>
 
           <article 
-            className="prose prose-zinc dark:prose-invert max-w-none 
-              [&>h2]:text-2xl [&>h2]:font-semibold [&>h2]:mt-12 [&>h2]:mb-6
-              [&>h3]:text-xl [&>h3]:font-medium [&>h3]:mt-8 [&>h3]:mb-4
-              [&>p]:text-lg [&>p]:leading-8 [&>p]:mb-6 [&>p]:text-foreground/90
-              [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-6
-              [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-6
-              [&_img]:rounded-lg [&_img]:my-8
-              [&_.katex-display]:my-8 [&_.katex-display]:overflow-x-auto [&_.katex-display]:overflow-y-hidden"
+            className="prose max-w-none 
+              text-foreground
+              prose-headings:text-foreground
+              [&>h2]:text-3xl [&>h2]:font-bold [&>h2]:mt-16 [&>h2]:mb-8 [&>h2]:tracking-tight
+              [&>h3]:text-2xl [&>h3]:font-bold [&>h3]:mt-12 [&>h3]:mb-6 [&>h3]:tracking-tight
+              [&>h4]:text-xl [&>h4]:font-semibold [&>h4]:mt-10 [&>h4]:mb-4
+              [&>p]:text-lg [&>p]:leading-8 [&>p]:mb-8 [&>p]:text-muted
+              [&>ul]:text-muted [&>ol]:text-muted
+              [&_img]:rounded-xl [&_img]:my-12
+              [&_.katex-display]:my-10 [&_.katex-display]:overflow-x-auto [&_.katex-display]:py-2"
             dangerouslySetInnerHTML={{ __html: htmlContent }} 
           />
         </main>
@@ -120,19 +139,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         <aside className="hidden w-64 shrink-0 xl:block">
           <div className="sticky top-20">
             <h4 className="text-xs font-semibold uppercase tracking-widest text-muted mb-4">On this page</h4>
-            <nav className="flex flex-col gap-3">
-              {headings.map((heading) => (
-                <a
-                  key={heading.id}
-                  href={`#${heading.id}`}
-                  className={`text-sm transition-colors hover:text-foreground ${
-                    heading.level === 3 ? "pl-4 text-muted/80" : "font-medium text-muted"
-                  }`}
-                >
-                  {heading.text}
-                </a>
-              ))}
-            </nav>
+            <TableOfContents headings={headings} />
           </div>
         </aside>
       </div>

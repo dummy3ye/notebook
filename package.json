@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.19",
     "front-matter": "^4.0.2",
     "katex": "^0.16.47",
     "marked": "^18.0.3",
@@ -16,6 +17,7 @@
     "next": "16.2.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "shiki": "^4.0.2",
     "slugify": "^1.6.9"
   },
   "devDependencies": {

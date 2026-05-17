@@ -3,38 +3,42 @@
 import { useEffect, useState } from "react";
 
 export default function ThemeToggle() {
+  const [mounted, setMounted] = useState(false);
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    // Check initial theme on mount
-    const isDarkStored = localStorage.getItem("theme") === "dark";
-    const isDarkSystem = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const shouldBeDark = isDarkStored || (!localStorage.getItem("theme") && isDarkSystem);
+    setMounted(true);
     
-    if (shouldBeDark) {
+    // Default to Light unless Dark is specifically saved
+    const savedTheme = localStorage.getItem("theme");
+    
+    if (savedTheme === "dark") {
       document.documentElement.classList.add("dark");
-      // Use a microtask or a short timeout to bypass the "synchronous setState in effect" lint rule
-      // while still initializing the UI state correctly.
-      Promise.resolve().then(() => setIsDark(true));
+      setIsDark(true);
+    } else {
+      document.documentElement.classList.remove("dark");
+      setIsDark(false);
     }
   }, []);
 
   const toggleTheme = () => {
-    const nextDark = !isDark;
-    setIsDark(nextDark);
-    if (nextDark) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
+    if (isDark) {
       document.documentElement.classList.remove("dark");
       localStorage.setItem("theme", "light");
+      setIsDark(false);
+    } else {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+      setIsDark(true);
     }
   };
+
+  if (!mounted) return null;
 
   return (
     <button
       onClick={toggleTheme}
-      className="fixed bottom-8 right-8 z-50 flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm transition-all hover:scale-110 active:scale-95"
+      className="fixed bottom-8 right-8 z-50 flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-lg transition-all duration-300 hover:scale-110 active:scale-95"
       aria-label="Toggle theme"
     >
       {isDark ? (

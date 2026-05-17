@@ -7,6 +7,7 @@ this is `notebook` mainly a kinda jurnal, but for all the stuff
 *   **Styling:** `Tailwind CSS` (v4.3.0)
 *   **Parsers:** `marked` + `front-matter`.
 *   **Math Engine:** `KaTeX`.
+*   **Code Highlighting:** `Shiki`.
 
 ## Layout
 *   **Left:** Blank
