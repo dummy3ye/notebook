@@ -7,18 +7,19 @@ export default function ThemeToggle() {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    
-    // Default to Light unless Dark is specifically saved
+    // Check initial theme on mount
     const savedTheme = localStorage.getItem("theme");
+    const isDark = savedTheme === "dark";
     
-    if (savedTheme === "dark") {
+    if (isDark) {
       document.documentElement.classList.add("dark");
-      setIsDark(true);
+      Promise.resolve().then(() => setIsDark(true));
     } else {
       document.documentElement.classList.remove("dark");
-      setIsDark(false);
+      Promise.resolve().then(() => setIsDark(false));
     }
+    
+    Promise.resolve().then(() => setMounted(true));
   }, []);
 
   const toggleTheme = () => {

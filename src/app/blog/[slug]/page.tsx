@@ -30,7 +30,6 @@ export async function generateStaticParams() {
 }
 
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
-  console.log("BlogPost: Mounting");
   const { slug } = await params;
   const filePath = path.join(process.cwd(), "content", `${slug}.md`);
 
@@ -64,7 +63,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         const text = raw.replace(/[#*`]/g, "").trim();
         const id = generateId(text);
         
-        // @ts-expect-error - parser exists on renderer instance
         const content = this.parser.parseInline(tokens);
         return `<h${depth} id="${id}">${content}</h${depth}>`;
       },
