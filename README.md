@@ -1,4 +1,5 @@
 # Notebook
+this is `notebook` mainly a kinda jurnal, but for all the stuff
 
 ## 1. Stack
 *   **Runtime:** `Bun` (v1.3.14+)
@@ -7,14 +8,10 @@
 *   **Parsers:** `marked` + `front-matter`.
 *   **Math Engine:** `KaTeX`.
 
----
-
 ## 2. Layout
 *   **Left:** Blank
 *   **Middle:** Chaos
 *   **Layout:** the table of `contents`
-
----
 
 ## 3. Directory Map
 ```text
