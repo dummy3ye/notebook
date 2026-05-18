@@ -15,7 +15,7 @@ The brain cannot simulate what it has never been experienced previously. Because
 For the sake of this theory, the "Primary Dreamer" is the true identity of the perticulat individual. "Reality" is the subjective experience currently being observed by the Primary Dreamer.
 
 ## The Setup
-For this thought experiment we will think of an scenario and a character as for the base establishment.
+For this thought experiment we will think of an scenario and a character as the base establishment.
 ### The Scenario
 Imagine a consciousness where (Dreamer) asleep in a higher plane of reality (Reality-0). The Dreamer enters a deeply immersive dream state. Within this dream, they experience a complete life from birth and onward, believing this layer of existence (Reality-1) is the absolute truth.
 ### The Condition of Continuity
@@ -32,7 +32,7 @@ Then it will do everything in its power to sustain the dream narrative to avoid 
 Consequently, the absolute stability and continuity of our daily lives is not proof of "reality," but rather proof that our current dream narrative hasn't hit its terminal boundary yet.
 
 ### Phase 2: The Terminal Trigger
-When an individual faces inevitable, unavoidable mortality in this current reality (e.g., old age, a fatal accident),
+When an individual faces inevitable, unavoidable mortality in this current reality (for example old age, a fatal accident),
 
 Then the consciousness arrives at the exact same hard boundary experienced in nightly dreams.
 
@@ -42,11 +42,11 @@ Therefore, biological death in this world will not result in a void, but will fo
 ### The Ripple Effect on Existence
 If this theory holds true, it fundamentally alters our understanding of mortality. Death is no longer the cessation of consciousness, but a transitionary mechanism—the ultimate waking device.
 
-### The "Nested Dream" Problem (Counterargument)
+### The "Nested Dream" Argument
 A major philosophical challenge to this theory is infinite regression: If we wake up in Reality-0 upon dying in this life, how do we know Reality-0 isn't also a dream? We face a loop where every death simply wakes us up into a higher-tier dream, with no guarantee of ever reaching the "True" waking world.
 
 ## Conclusion
 The belief that we are awake relies entirely on the consistency of our daily lives. However, by analyzing the rules of nightly dreams—specifically the termination protocol triggered by death—we find a logical basis for the theory that reality is simply a dream that hasn't been forced to end yet. What we fear as the end of life may simply be the moment the alarm goes off.
 
-##### courtesy : help of artificial intelligence was taken for the conclusion and for the fomat of this documentation.
+##### courtesy : help of artificial intelligence was taken for the conclusion and the structure of this documentation. *not written by ai*
 ##### © 2024 Imtiyaz Parvez.
