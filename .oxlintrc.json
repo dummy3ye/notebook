@@ -4,7 +4,5 @@
   "rules": {
     "no-console": "warn",
     "unicorn/filename-case": "off"
-  },
-  "deny": ["correctness", "perf", "style"],
-  "allow": ["eslint(no-unused-vars)"]
+  }
 }

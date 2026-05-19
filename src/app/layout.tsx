@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+    metadataBase: new URL("https://tamakisuoh.vercel.app"),
     title: "Notebook",
-    description:
-        "A fully functional blog that handles any type of online publishing.",
+    description: "A fully functional blog that handles any type of online publishing.",
 };
 
 export default function RootLayout({
