@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.scss";
-import ThemeToggle from "@/components/ThemeToggle";
+import ThemePalette from "@/components/ThemePalette";
 import Search from "@/components/Search";
 
 const geistSans = Geist({
@@ -34,7 +34,7 @@ export default function RootLayout({
         >
             <body className="min-h-full flex flex-col" suppressHydrationWarning>
                 {children}
-                <ThemeToggle />
+                <ThemePalette />
                 <Search />
             </body>
         </html>

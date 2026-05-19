@@ -4,28 +4,30 @@
 @plugin "@tailwindcss/typography";
 
 :root {
-    --background: #fffafa;
-
-    /* Snowwhite */
+    --background: #fffafa; /* Snowwhite */
     --foreground: #0a0a0a;
     --muted: #737373;
     --border: #e5e5e5;
     --accent: #262626;
-
-    /* Typography Scale */
     --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
     --font-mono:
         var(--font-geist-mono), ui-monospace, sfmono-regular, monospace;
 }
 
 .dark {
-    --background: #000300;
-
-    /* Pure Black */
+    --background: #000; /* Pure Black */
     --foreground: #fafafa;
     --muted: #a3a3a3;
     --border: #262626;
     --accent: #e5e5e5;
+}
+
+.catppuccin {
+    --background: #1e1e2e;
+    --foreground: #cdd6f4;
+    --muted: #7f849c;
+    --border: #313244;
+    --accent: #45475a;
 }
 
 @theme inline {
@@ -48,8 +50,6 @@ body {
     font-family: var(--font-sans);
     text-rendering: optimizelegibility;
     -webkit-font-smoothing: antialiased;
-
-    /* Ultra-smooth synchronized transition */
     transition:
         background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
         color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
@@ -81,7 +81,6 @@ body {
         background: var(--muted);
     }
 
-    /* Firefox support */
     * {
         scrollbar-width: thin;
         scrollbar-color: var(--border) transparent;
@@ -89,7 +88,8 @@ body {
 }
 
 /* Shiki and KaTeX Theme Sync */
-.dark .katex {
+.dark .katex,
+.catppuccin .katex {
     color: var(--foreground);
 }
 
@@ -109,7 +109,6 @@ blockquote > p {
     font-weight: 500;
 }
 
-/* Specific Callout Variants */
 blockquote.important {
     border-left-color: var(--foreground) !important;
 }
@@ -127,8 +126,7 @@ pre {
     line-height: 1.625rem !important;
 }
 
-.dark pre {
+.dark pre,
+.catppuccin pre {
     background-color: #0a0a0a !important;
-
-    /* Slightly lighter than pure black for depth */
 }

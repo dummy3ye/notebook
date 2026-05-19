@@ -24,10 +24,10 @@ export default function SearchButton() {
                 />
             </svg>
             <span className="text-xs font-medium uppercase tracking-widest">
-                Search
+                Ctrl +
             </span>
-            <kbd className="text-[10px] font-mono opacity-60 group-hover:opacity-100 transition-opacity">
-                ⌘K
+            <kbd className="text-[10px] font-mono opacity-100 group-hover:opacity-100 transition-opacity">
+                K
             </kbd>
         </button>
     );

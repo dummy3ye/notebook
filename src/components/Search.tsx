@@ -10,6 +10,39 @@ interface SearchResult {
     content: string;
 }
 
+const commands = [
+    {
+        id: "theme-dark",
+        label: ">theme dark",
+        action: () => {
+            document.documentElement.classList.add("dark");
+            localStorage.setItem("theme", "dark");
+        },
+    },
+    {
+        id: "theme-light",
+        label: ">theme light",
+        action: () => {
+            document.documentElement.classList.remove("dark");
+            localStorage.setItem("theme", "light");
+        },
+    },
+    {
+        id: "home",
+        label: ">home",
+        action: () => {
+            window.location.href = "/";
+        },
+    },
+    {
+        id: "test",
+        label: ">test",
+        action: () => {
+            window.location.href = "/test";
+        },
+    },
+];
+
 const highlightText = (text: string, highlight: string) => {
     if (!highlight.trim()) return text;
     const parts = text.split(new RegExp(`(${highlight})`, "gi"));
@@ -31,33 +64,20 @@ const highlightText = (text: string, highlight: string) => {
     );
 };
 
-const getExcerpt = (content: string, highlight: string) => {
-    if (!highlight.trim()) return content.slice(0, 100) + "...";
-
-    const index = content.toLowerCase().indexOf(highlight.toLowerCase());
-    if (index === -1) return content.slice(0, 100) + "...";
-
-    const start = Math.max(0, index - 40);
-    const end = Math.min(content.length, index + 80);
-    let excerpt = content.slice(start, end);
-
-    if (start > 0) excerpt = "..." + excerpt;
-    if (end < content.length) excerpt = excerpt + "...";
-
-    return highlightText(excerpt, highlight);
-};
-
 export default function Search() {
     const [isOpen, setIsOpen] = useState(false);
     const [query, setQuery] = useState("");
     const [results, setResults] = useState<
-        (SearchResult & {
-            displayExcerpt: React.ReactNode;
-            displayTitle: React.ReactNode;
-        })[]
+        {
+            slug: string;
+            title: string;
+            isCommand?: boolean;
+            displayTitle?: React.ReactNode;
+        }[]
     >([]);
     const [allPosts, setAllPosts] = useState<SearchResult[]>([]);
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const [isCommandMode, setIsCommandMode] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
 
@@ -67,11 +87,8 @@ export default function Search() {
                 e.preventDefault();
                 setIsOpen((prev) => !prev);
             }
-            if (e.key === "Escape") {
-                setIsOpen(false);
-            }
+            if (e.key === "Escape") setIsOpen(false);
         };
-
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, []);
@@ -87,33 +104,46 @@ export default function Search() {
         } else {
             Promise.resolve().then(() => {
                 setQuery("");
-                setResults([]);
+                setIsCommandMode(false);
             });
         }
     }, [isOpen, allPosts.length]);
 
     useEffect(() => {
-        if (query.trim() === "") {
-            Promise.resolve().then(() => setResults([]));
-            return;
+        if (query.startsWith(">")) {
+            Promise.resolve().then(() => {
+                setIsCommandMode(true);
+                const filtered = commands.filter((c) =>
+                    c.label.includes(query.toLowerCase())
+                );
+                setResults(
+                    filtered.map((c) => ({
+                        slug: c.id,
+                        title: c.label,
+                        isCommand: true,
+                    }))
+                );
+            });
+        } else {
+            Promise.resolve().then(() => {
+                setIsCommandMode(false);
+                const filtered = allPosts.filter(
+                    (post) =>
+                        post.title
+                            .toLowerCase()
+                            .includes(query.toLowerCase()) ||
+                        post.content.toLowerCase().includes(query.toLowerCase())
+                );
+                setResults(
+                    filtered.map((p) => ({
+                        ...p,
+                        isCommand: false,
+                        displayTitle: highlightText(p.title, query),
+                    }))
+                );
+            });
         }
-
-        const filtered = allPosts
-            .filter(
-                (post) =>
-                    post.title.toLowerCase().includes(query.toLowerCase()) ||
-                    post.content.toLowerCase().includes(query.toLowerCase())
-            )
-            .map((post) => ({
-                ...post,
-                displayTitle: highlightText(post.title, query),
-                displayExcerpt: getExcerpt(post.content, query),
-            }));
-
-        Promise.resolve().then(() => {
-            setResults(filtered);
-            setSelectedIndex(0);
-        });
+        Promise.resolve().then(() => setSelectedIndex(0));
     }, [query, allPosts]);
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -126,109 +156,51 @@ export default function Search() {
                 (prev) => (prev - 1 + results.length) % results.length
             );
         } else if (e.key === "Enter" && results[selectedIndex]) {
-            navigateToPost(results[selectedIndex].slug);
+            const item = results[selectedIndex];
+            if (item.isCommand) {
+                const cmd = commands.find((c) => c.id === item.slug);
+                cmd?.action();
+            } else {
+                router.push(`/blog/${item.slug}`);
+            }
+            setIsOpen(false);
         }
-    };
-
-    const navigateToPost = (slug: string) => {
-        router.push(`/blog/${slug}`);
-        setIsOpen(false);
     };
 
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh] px-4 bg-black/40 backdrop-blur-sm">
+        <div
+            className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh] px-4 bg-black/40 backdrop-blur-sm"
+            onClick={() => setIsOpen(false)}
+        >
             <div
-                className="w-full max-w-2xl bg-background border border-border shadow-2xl rounded-xl overflow-hidden animate-in fade-in zoom-in duration-200"
+                className="w-full max-w-2xl bg-background border border-border shadow-2xl rounded-xl overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex items-center px-4 border-b border-border">
-                    <svg
-                        className="w-5 h-5 text-muted mr-3"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        />
-                    </svg>
                     <input
                         ref={inputRef}
-                        type="text"
-                        className="w-full py-4 bg-transparent border-none focus:outline-none text-foreground placeholder:text-muted"
-                        placeholder="Search posts..."
+                        className="w-full py-4 bg-transparent focus:outline-none text-foreground"
+                        placeholder={isCommandMode ? "Command..." : "Search..."}
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         onKeyDown={handleKeyDown}
                     />
-                    <kbd className="hidden sm:inline-flex h-5 items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted opacity-100">
-                        ESC
-                    </kbd>
                 </div>
-
                 <div className="max-h-[60vh] overflow-y-auto p-2">
-                    {results.length > 0 ? (
-                        results.map((post, index) => (
-                            <button
-                                key={post.slug}
-                                onClick={() => navigateToPost(post.slug)}
-                                className={`w-full text-left px-4 py-3 rounded-lg flex flex-col gap-1 transition-colors ${
-                                    index === selectedIndex
-                                        ? "bg-muted/40"
-                                        : "hover:bg-muted/20"
-                                }`}
-                            >
-                                <div className="flex justify-between items-center">
-                                    <span className="font-semibold text-foreground">
-                                        {post.displayTitle}
-                                    </span>
-                                    <span className="text-xs text-muted">
-                                        {post.date}
-                                    </span>
-                                </div>
-                                <p className="text-sm text-muted line-clamp-1">
-                                    {post.displayExcerpt}
-                                </p>
-                            </button>
-                        ))
-                    ) : query ? (
-                        <div className="px-4 py-8 text-center text-muted italic">
-                            No results found for &quot;{query}&quot;
-                        </div>
-                    ) : (
-                        <div className="px-4 py-8 text-center text-muted italic">
-                            Type to search for posts...
-                        </div>
-                    )}
-                </div>
-
-                <div className="px-4 py-2 border-t border-border bg-muted/30 flex justify-between items-center text-[10px] text-muted font-medium uppercase tracking-widest">
-                    <div className="flex gap-4">
-                        <span className="flex items-center gap-1">
-                            <kbd className="border border-border bg-background px-1 rounded">
-                                ↵
-                            </kbd>{" "}
-                            Select
-                        </span>
-                        <span className="flex items-center gap-1">
-                            <kbd className="border border-border bg-background px-1 rounded">
-                                ↑↓
-                            </kbd>{" "}
-                            Navigate
-                        </span>
-                    </div>
-                    <span>Notebook Search v1.1</span>
+                    {results.map((item, index) => (
+                        <button
+                            key={item.slug}
+                            className={`w-full text-left px-4 py-3 rounded-lg ${index === selectedIndex ? "bg-muted/40" : ""}`}
+                        >
+                            <span className="font-semibold text-foreground">
+                                {item.displayTitle || item.title}
+                            </span>
+                        </button>
+                    ))}
                 </div>
             </div>
-            <div
-                className="absolute inset-0 -z-10"
-                onClick={() => setIsOpen(false)}
-            />
         </div>
     );
 }
