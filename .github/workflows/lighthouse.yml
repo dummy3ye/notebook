@@ -30,9 +30,8 @@ jobs:
 
             - name: Lighthouse CI
               run: |
-                npm run start &
-                npx wait-on http://localhost:3000
-                npm run lhci
+                  npm run start &
+                  npx wait-on http://localhost:3000
+                  npm run lhci
               env:
-                LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
-
+                  LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
