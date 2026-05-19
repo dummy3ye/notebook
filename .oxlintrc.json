@@ -1,8 +1,8 @@
 {
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["typescript", "unicorn", "react", "react-hooks"],
-  "rules": {
-    "no-console": "warn",
-    "unicorn/filename-case": "off"
-  }
+    "$schema": "./node_modules/oxlint/configuration_schema.json",
+    "plugins": ["typescript", "unicorn", "react", "react-hooks"],
+    "rules": {
+        "no-console": "warn",
+        "unicorn/filename-case": "off"
+    }
 }

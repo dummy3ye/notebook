@@ -228,8 +228,8 @@ export default async function BlogPost({
                             {attributes.title}
                         </h1>
                     </header>
-<article 
-  className="prose max-w-none 
+                    <article
+                        className="prose max-w-none 
     text-foreground
     prose-headings:text-foreground
     [&>h2]:text-3xl [&>h2]:font-bold [&>h2]:mt-16 [&>h2]:mb-8 [&>h2]:tracking-tight
@@ -239,10 +239,12 @@ export default async function BlogPost({
     [&>ul]:text-muted [&>ol]:text-muted
     [&_img]:rounded-xl [&_img]:my-12
     [&_.katex-display]:my-10 [&_.katex-display]:overflow-x-auto [&_.katex-display]:py-2"
->
-  <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
-  <ClientHydration />
-</article>
+                    >
+                        <div
+                            dangerouslySetInnerHTML={{ __html: htmlContent }}
+                        />
+                        <ClientHydration />
+                    </article>
 
                     {/* Navigation Links */}
                     <footer className="mt-24 pt-8 border-t border-border">

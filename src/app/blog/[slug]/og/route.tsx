@@ -25,9 +25,9 @@ export async function GET(
         const { attributes } = fm<PostData>(fileContent);
         title = attributes.title;
         date = attributes.date;
-        } catch {
+    } catch {
         // Fallback to defaults
-        }
+    }
     return new ImageResponse(
         <div
             style={{
