@@ -1,24 +1,28 @@
 # Notebook
+
 this is `notebook` mainly a kinda jurnal, but for all the stuff
 
 ## Stack
-*   **Runtime:** `Bun` (v1.3.14+)
-*   **Framework:** `Next.js` (v16.2.6)
-*   **Styling:** `Tailwind CSS` (v4.3.0)
-*   **Parsers:** `marked` + `front-matter`.
-*   **Math Engine:** `KaTeX`.
-*   **Code Highlighting:** `Shiki`.
+
+- **Runtime:** `Bun` (v1.3.14+)
+- **Framework:** `Next.js` (v16.2.6)
+- **Styling:** `Tailwind CSS` (v4.3.0)
+- **Parsers:** `marked` + `front-matter`.
+- **Math Engine:** `KaTeX`.
+- **Code Highlighting:** `Shiki`.
 
 ## Layout
-*   **Left:** Blank
-*   **Middle:** Chaos
-*   **Layout:** the table of `contents`
+
+- **Left:** Blank
+- **Middle:** Chaos
+- **Layout:** the table of `contents`
 
 ## Directory Map
+
 ```text
 notebook/
 ├── content/              # Raw .md
-├── public/               # Static assets. 
+├── public/               # Static assets.
 ├── src/
 │   ├── app/
 │   │   ├── blog/

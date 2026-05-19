@@ -10,18 +10,20 @@ This post validates the rendering engine, showcasing **Shiki**-powered syntax hi
 Notebook supports multi-language syntax highlighting out of the box using VS Code themes.
 
 ### TypeScript
+
 ```typescript
 interface NotebookProps {
-  theme: 'snowwhite' | 'void';
-  activeSection: string;
+    theme: "snowwhite" | "void";
+    activeSection: string;
 }
 
 const renderEngine = (props: NotebookProps) => {
-  return props.theme === 'snowwhite' ? 'Clean' : 'Dark';
+    return props.theme === "snowwhite" ? "Clean" : "Dark";
 };
 ```
 
 ### Python
+
 ```python
 def calculate_entropy(data):
     import math
@@ -33,11 +35,13 @@ def calculate_entropy(data):
 High-performance server-side LaTeX rendering.
 
 ### The Quadratic Formula
+
 $$
 x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
 $$
 
 ### Maxwell's Equations
+
 The foundational laws of electromagnetism:
 
 $$
@@ -50,9 +54,11 @@ $$
 $$
 
 ### Schrödinger's Equation
+
 $$
 \hat{H}\psi = E\psi
 $$
 
 ## Conclusion
+
 Everything is rendering as expected. The engine is primed.

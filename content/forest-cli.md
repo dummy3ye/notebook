@@ -1,5 +1,5 @@
 ---
-title: Forest - idle 2d moving detailed forest written in C 
+title: Forest - idle 2d moving detailed forest written in C
 date: May 18, 2026
 ---
 
