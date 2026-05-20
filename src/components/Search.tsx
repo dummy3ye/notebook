@@ -73,6 +73,7 @@ export default function Search() {
             title: string;
             isCommand?: boolean;
             displayTitle?: React.ReactNode;
+            displaySnippet?: React.ReactNode;
         }[]
     >([]);
     const [allPosts, setAllPosts] = useState<SearchResult[]>([]);
@@ -127,19 +128,37 @@ export default function Search() {
         } else {
             Promise.resolve().then(() => {
                 setIsCommandMode(false);
+                const q = query.toLowerCase();
                 const filtered = allPosts.filter(
                     (post) =>
-                        post.title
-                            .toLowerCase()
-                            .includes(query.toLowerCase()) ||
-                        post.content.toLowerCase().includes(query.toLowerCase())
+                        post.title.toLowerCase().includes(q) ||
+                        post.content.toLowerCase().includes(q)
                 );
                 setResults(
-                    filtered.map((p) => ({
-                        ...p,
-                        isCommand: false,
-                        displayTitle: highlightText(p.title, query),
-                    }))
+                    filtered.map((p) => {
+                        let snippet: React.ReactNode = null;
+                        const contentLower = p.content.toLowerCase();
+                        const queryIndex = contentLower.indexOf(q);
+
+                        if (queryIndex !== -1 && query.length > 0) {
+                            const start = Math.max(0, queryIndex - 40);
+                            const end = Math.min(
+                                p.content.length,
+                                queryIndex + query.length + 80
+                            );
+                            let text = p.content.slice(start, end);
+                            if (start > 0) text = "..." + text;
+                            if (end < p.content.length) text = text + "...";
+                            snippet = highlightText(text, query);
+                        }
+
+                        return {
+                            ...p,
+                            isCommand: false,
+                            displayTitle: highlightText(p.title, query),
+                            displaySnippet: snippet,
+                        };
+                    })
                 );
             });
         }
@@ -192,11 +211,29 @@ export default function Search() {
                     {results.map((item, index) => (
                         <button
                             key={item.slug}
-                            className={`w-full text-left px-4 py-3 rounded-lg ${index === selectedIndex ? "bg-muted/40" : ""}`}
+                            onClick={() => {
+                                if (item.isCommand) {
+                                    const cmd = commands.find(
+                                        (c) => c.id === item.slug
+                                    );
+                                    cmd?.action();
+                                } else {
+                                    router.push(`/blog/${item.slug}`);
+                                }
+                                setIsOpen(false);
+                            }}
+                            className={`w-full text-left px-4 py-3 rounded-lg flex flex-col gap-1 ${
+                                index === selectedIndex ? "bg-muted/40" : ""
+                            }`}
                         >
                             <span className="font-semibold text-foreground">
                                 {item.displayTitle || item.title}
                             </span>
+                            {item.displaySnippet && (
+                                <span className="text-xs text-muted line-clamp-2">
+                                    {item.displaySnippet}
+                                </span>
+                            )}
                         </button>
                     ))}
                 </div>

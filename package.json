@@ -8,7 +8,7 @@
         "start": "next start",
         "lint": "eslint",
         "lint:ox": "oxlint",
-        "lint:css": "stylelint \"**/*.scss\"",
+        "lint:css": "stylelint \"**/*.{css,scss}\"",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
         "lhci": "lhci autorun",

@@ -21,17 +21,20 @@ this is `notebook` mainly a kinda jurnal, but for all the stuff
 
 ```text
 notebook/
-├── content/              # Raw .md
-├── public/               # Static assets.
+├── content/              # Raw Markdown journals/notes.
+├── public/               # Static assets (images, icons).
 ├── src/
 │   ├── app/
+│   │   ├── api/          # API routes (search, etc).
 │   │   ├── blog/
 │   │   │   └── [slug]/
-│   │   │       └── page.tsx  # The 3-column rendering.
-│   │   ├── globals.css        # Theme variables & typography.
-│   │   ├── layout.tsx         # The wrapper + ThemeToggle.
-│   │   └── page.tsx           # Entry point
-│   └── components/            # Reusable UI bits (ThemeToggle, etc).
+│   │   │       ├── page.tsx  # Dynamic blog post rendering.
+│   │   │       └── og/       # Dynamic Open Graph images.
+│   │   ├── globals.scss      # Global styles & Theme variables.
+│   │   ├── layout.tsx        # Root layout with theme providers.
+│   │   └── page.tsx          # Home page (Chaos).
+│   ├── components/       # UI Components (Search, TableOfContents, etc).
+│   └── lib/              # Shared utilities (Shiki, etc).
 ```
 
 ## Getting Started

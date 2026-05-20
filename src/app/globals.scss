@@ -1,25 +1,15 @@
 @import "tailwindcss";
 @import "katex/dist/katex.min.css";
+@import "./themes/midnight.css";
+@import "./themes/rosepine.css";
+@import "./themes/snow.css";
 
 @plugin "@tailwindcss/typography";
 
 :root {
-    --background: #fffafa; /* Snowwhite */
-    --foreground: #0a0a0a;
-    --muted: #737373;
-    --border: #e5e5e5;
-    --accent: #262626;
     --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
     --font-mono:
         var(--font-geist-mono), ui-monospace, sfmono-regular, monospace;
-}
-
-.dark {
-    --background: #000; /* Pure Black */
-    --foreground: #fafafa;
-    --muted: #a3a3a3;
-    --border: #262626;
-    --accent: #e5e5e5;
 }
 
 .catppuccin {
@@ -88,8 +78,9 @@ body {
 }
 
 /* Shiki and KaTeX Theme Sync */
-.dark .katex,
-.catppuccin .katex {
+.catppuccin .katex,
+.midnight .katex,
+.rosepine .katex {
     color: var(--foreground);
 }
 
@@ -126,7 +117,8 @@ pre {
     line-height: 1.625rem !important;
 }
 
-.dark pre,
-.catppuccin pre {
+.catppuccin pre,
+.midnight pre,
+.rosepine pre {
     background-color: #0a0a0a !important;
 }
