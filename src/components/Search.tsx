@@ -4,7 +4,12 @@ import { useEffect, useState, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search as SearchIcon, FileText, Terminal, Command } from "lucide-react";
+import {
+    Search as SearchIcon,
+    FileText,
+    Terminal,
+    Command,
+} from "lucide-react";
 
 interface SearchResult {
     slug: string;
@@ -188,7 +193,11 @@ export default function Search() {
                         initial={{ scale: 0.95, opacity: 0, y: -20 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.95, opacity: 0, y: -20 }}
-                        transition={{ type: "spring", damping: 20, stiffness: 300 }}
+                        transition={{
+                            type: "spring",
+                            damping: 20,
+                            stiffness: 300,
+                        }}
                         className="w-full max-w-2xl bg-background border border-border shadow-2xl rounded-2xl overflow-hidden"
                         onClick={(e) => e.stopPropagation()}
                     >
@@ -197,7 +206,11 @@ export default function Search() {
                             <input
                                 ref={inputRef}
                                 className="w-full py-5 px-4 bg-transparent focus:outline-none text-foreground text-lg"
-                                placeholder={isCommandMode ? "Type a command..." : "Search across the notebook..."}
+                                placeholder={
+                                    isCommandMode
+                                        ? "Type a command..."
+                                        : "Search across the notebook..."
+                                }
                                 value={query}
                                 onChange={handleQueryChange}
                                 onKeyDown={handleKeyDown}
@@ -218,36 +231,57 @@ export default function Search() {
                                             onClick={() => {
                                                 if (item.isCommand) {
                                                     const cmd = commands.find(
-                                                        (c) => c.id === item.slug
+                                                        (c) =>
+                                                            c.id === item.slug
                                                     );
                                                     cmd?.action(router);
                                                 } else {
-                                                    router.push(`/blog/${item.slug}`);
+                                                    router.push(
+                                                        `/blog/${item.slug}`
+                                                    );
                                                 }
                                                 setIsOpen(false);
                                                 setQuery("");
                                             }}
-                                            onMouseEnter={() => setSelectedIndex(index)}
+                                            onMouseEnter={() =>
+                                                setSelectedIndex(index)
+                                            }
                                             className={`w-full text-left px-4 py-4 rounded-xl flex items-start gap-4 transition-all ${
                                                 index === selectedIndex
                                                     ? "bg-foreground text-background"
                                                     : "hover:bg-muted/30 text-foreground"
                                             }`}
                                         >
-                                            <div className={`mt-1 p-2 rounded-lg ${
-                                                index === selectedIndex ? "bg-background/20" : "bg-muted/10"
-                                            }`}>
-                                                {item.isCommand ? <Terminal size={18} /> : <FileText size={18} />}
+                                            <div
+                                                className={`mt-1 p-2 rounded-lg ${
+                                                    index === selectedIndex
+                                                        ? "bg-background/20"
+                                                        : "bg-muted/10"
+                                                }`}
+                                            >
+                                                {item.isCommand ? (
+                                                    <Terminal size={18} />
+                                                ) : (
+                                                    <FileText size={18} />
+                                                )}
                                             </div>
                                             <div className="flex flex-col gap-1 overflow-hidden">
                                                 <span className="font-semibold text-base truncate">
-                                                    {item.displayTitle || item.title}
+                                                    {item.displayTitle ||
+                                                        item.title}
                                                 </span>
-                                                {(item.displaySnippet || item.description) && (
-                                                    <span className={`text-xs line-clamp-2 leading-relaxed ${
-                                                        index === selectedIndex ? "opacity-80" : "text-muted"
-                                                    }`}>
-                                                        {item.displaySnippet || item.description}
+                                                {(item.displaySnippet ||
+                                                    item.description) && (
+                                                    <span
+                                                        className={`text-xs line-clamp-2 leading-relaxed ${
+                                                            index ===
+                                                            selectedIndex
+                                                                ? "opacity-80"
+                                                                : "text-muted"
+                                                        }`}
+                                                    >
+                                                        {item.displaySnippet ||
+                                                            item.description}
                                                     </span>
                                                 )}
                                             </div>
@@ -269,10 +303,16 @@ export default function Search() {
                             </span>
                             <div className="flex gap-4 text-[10px] text-muted font-bold uppercase tracking-widest">
                                 <span className="flex items-center gap-1">
-                                    <span className="border border-border rounded px-1">↑↓</span> Navigate
+                                    <span className="border border-border rounded px-1">
+                                        ↑↓
+                                    </span>{" "}
+                                    Navigate
                                 </span>
                                 <span className="flex items-center gap-1">
-                                    <span className="border border-border rounded px-1">↵</span> Open
+                                    <span className="border border-border rounded px-1">
+                                        ↵
+                                    </span>{" "}
+                                    Open
                                 </span>
                             </div>
                         </div>

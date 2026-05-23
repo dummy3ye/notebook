@@ -194,8 +194,7 @@ export default function ThemePalette() {
                                                         </span>
                                                     </div>
                                                 </div>
-                                                {theme.id ===
-                                                    activeThemeId && (
+                                                {theme.id === activeThemeId && (
                                                     <Check
                                                         size={14}
                                                         className={
