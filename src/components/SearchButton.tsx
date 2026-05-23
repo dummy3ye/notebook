@@ -1,5 +1,7 @@
 "use client";
 
+import { Search, Command } from "lucide-react";
+
 export default function SearchButton() {
     return (
         <button
@@ -8,27 +10,17 @@ export default function SearchButton() {
                     new KeyboardEvent("keydown", { key: "k", metaKey: true })
                 )
             }
-            className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border bg-muted/30 text-muted hover:text-foreground hover:border-muted transition-all group"
+            className="hidden sm:flex items-center gap-3 px-4 py-2 rounded-xl border border-border bg-muted/20 text-muted hover:text-foreground hover:border-muted transition-all group"
         >
-            <svg
-                className="w-3.5 h-3.5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-            >
-                <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-            </svg>
-            <span className="text-xs font-medium uppercase tracking-widest">
-                Ctrl +
-            </span>
-            <kbd className="text-[10px] font-mono opacity-100 group-hover:opacity-100 transition-opacity">
-                K
-            </kbd>
+            <Search className="w-4 h-4 transition-transform group-hover:scale-110" />
+            <div className="flex items-center gap-1.5">
+                <kbd className="flex h-5 items-center gap-1 rounded border border-border bg-background px-1.5 font-mono text-[10px] font-medium text-muted">
+                    <Command size={10} />
+                </kbd>
+                <kbd className="flex h-5 items-center gap-1 rounded border border-border bg-background px-1.5 font-mono text-[10px] font-medium text-muted">
+                    K
+                </kbd>
+            </div>
         </button>
     );
 }

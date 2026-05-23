@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Copy, Check } from "lucide-react";
 
 export default function CopyButton({ code }: { code: string }) {
     const [copied, setCopied] = useState(false);
@@ -14,37 +15,13 @@ export default function CopyButton({ code }: { code: string }) {
     return (
         <button
             onClick={copy}
-            className="absolute top-3 right-3 p-1.5 rounded-md border border-border bg-background/50 text-muted opacity-0 group-hover:opacity-100 hover:text-foreground transition-all z-10"
+            className="absolute top-4 right-4 p-2 rounded-lg border border-border bg-background/50 backdrop-blur-sm text-muted opacity-0 group-hover:opacity-100 hover:text-foreground hover:bg-background transition-all z-10 shadow-sm"
             aria-label="Copy code"
         >
             {copied ? (
-                <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                    />
-                </svg>
+                <Check className="w-4 h-4 text-green-500" />
             ) : (
-                <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                    />
-                </svg>
+                <Copy className="w-4 h-4" />
             )}
         </button>
     );

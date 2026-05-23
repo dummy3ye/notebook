@@ -1,7 +1,10 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { motion, AnimatePresence } from "framer-motion";
+import { Search as SearchIcon, FileText, Terminal, Command } from "lucide-react";
 
 interface SearchResult {
     slug: string;
@@ -12,33 +15,19 @@ interface SearchResult {
 
 const commands = [
     {
-        id: "theme-dark",
-        label: ">theme dark",
-        action: () => {
-            document.documentElement.classList.add("dark");
-            localStorage.setItem("theme", "dark");
-        },
-    },
-    {
-        id: "theme-light",
-        label: ">theme light",
-        action: () => {
-            document.documentElement.classList.remove("dark");
-            localStorage.setItem("theme", "light");
-        },
-    },
-    {
         id: "home",
         label: ">home",
-        action: () => {
-            window.location.href = "/";
-        },
+        description: "Go to home page",
+        action: (router: AppRouterInstance) => router.push("/"),
     },
     {
-        id: "test",
-        label: ">test",
+        id: "theme",
+        label: ">theme",
+        description: "Open theme palette",
         action: () => {
-            window.location.href = "/test";
+            window.dispatchEvent(
+                new KeyboardEvent("keydown", { key: "j", metaKey: true })
+            );
         },
     },
 ];
@@ -67,28 +56,78 @@ const highlightText = (text: string, highlight: string) => {
 export default function Search() {
     const [isOpen, setIsOpen] = useState(false);
     const [query, setQuery] = useState("");
-    const [results, setResults] = useState<
-        {
-            slug: string;
-            title: string;
-            isCommand?: boolean;
-            displayTitle?: React.ReactNode;
-            displaySnippet?: React.ReactNode;
-        }[]
-    >([]);
     const [allPosts, setAllPosts] = useState<SearchResult[]>([]);
     const [selectedIndex, setSelectedIndex] = useState(0);
-    const [isCommandMode, setIsCommandMode] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
+
+    const isCommandMode = query.startsWith(">");
+
+    const results = useMemo(() => {
+        if (isCommandMode) {
+            const q = query.slice(1).toLowerCase();
+            const filtered = commands.filter(
+                (c) =>
+                    c.label.toLowerCase().includes(query.toLowerCase()) ||
+                    c.description.toLowerCase().includes(q)
+            );
+            return filtered.map((c) => ({
+                slug: c.id,
+                title: c.label,
+                description: c.description,
+                isCommand: true,
+                displayTitle: null,
+                displaySnippet: null,
+            }));
+        } else {
+            const q = query.toLowerCase();
+            const filtered = allPosts.filter(
+                (post) =>
+                    post.title.toLowerCase().includes(q) ||
+                    post.content.toLowerCase().includes(q)
+            );
+            return filtered.map((p) => {
+                let snippet: React.ReactNode = null;
+                const contentLower = p.content.toLowerCase();
+                const queryIndex = contentLower.indexOf(q);
+
+                if (queryIndex !== -1 && query.length > 0) {
+                    const start = Math.max(0, queryIndex - 40);
+                    const end = Math.min(
+                        p.content.length,
+                        queryIndex + query.length + 80
+                    );
+                    let text = p.content.slice(start, end);
+                    if (start > 0) text = "..." + text;
+                    if (end < p.content.length) text = text + "...";
+                    snippet = highlightText(text, query);
+                }
+
+                return {
+                    slug: p.slug,
+                    title: p.title,
+                    isCommand: false,
+                    displayTitle: highlightText(p.title, query),
+                    displaySnippet: snippet,
+                };
+            });
+        }
+    }, [query, allPosts, isCommandMode]);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if ((e.metaKey || e.ctrlKey) && e.key === "k") {
                 e.preventDefault();
-                setIsOpen((prev) => !prev);
+                setIsOpen((prev) => {
+                    const next = !prev;
+                    if (!next) setQuery("");
+                    return next;
+                });
             }
-            if (e.key === "Escape") setIsOpen(false);
+            if (e.key === "Escape") {
+                setIsOpen(false);
+                setQuery("");
+            }
         };
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
@@ -96,74 +135,19 @@ export default function Search() {
 
     useEffect(() => {
         if (isOpen) {
-            inputRef.current?.focus();
+            setTimeout(() => inputRef.current?.focus(), 100);
             if (allPosts.length === 0) {
                 fetch("/api/search")
                     .then((res) => res.json())
                     .then((data) => setAllPosts(data));
             }
-        } else {
-            Promise.resolve().then(() => {
-                setQuery("");
-                setIsCommandMode(false);
-            });
         }
     }, [isOpen, allPosts.length]);
 
-    useEffect(() => {
-        if (query.startsWith(">")) {
-            Promise.resolve().then(() => {
-                setIsCommandMode(true);
-                const filtered = commands.filter((c) =>
-                    c.label.includes(query.toLowerCase())
-                );
-                setResults(
-                    filtered.map((c) => ({
-                        slug: c.id,
-                        title: c.label,
-                        isCommand: true,
-                    }))
-                );
-            });
-        } else {
-            Promise.resolve().then(() => {
-                setIsCommandMode(false);
-                const q = query.toLowerCase();
-                const filtered = allPosts.filter(
-                    (post) =>
-                        post.title.toLowerCase().includes(q) ||
-                        post.content.toLowerCase().includes(q)
-                );
-                setResults(
-                    filtered.map((p) => {
-                        let snippet: React.ReactNode = null;
-                        const contentLower = p.content.toLowerCase();
-                        const queryIndex = contentLower.indexOf(q);
-
-                        if (queryIndex !== -1 && query.length > 0) {
-                            const start = Math.max(0, queryIndex - 40);
-                            const end = Math.min(
-                                p.content.length,
-                                queryIndex + query.length + 80
-                            );
-                            let text = p.content.slice(start, end);
-                            if (start > 0) text = "..." + text;
-                            if (end < p.content.length) text = text + "...";
-                            snippet = highlightText(text, query);
-                        }
-
-                        return {
-                            ...p,
-                            isCommand: false,
-                            displayTitle: highlightText(p.title, query),
-                            displaySnippet: snippet,
-                        };
-                    })
-                );
-            });
-        }
-        Promise.resolve().then(() => setSelectedIndex(0));
-    }, [query, allPosts]);
+    const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setQuery(e.target.value);
+        setSelectedIndex(0);
+    };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === "ArrowDown") {
@@ -178,66 +162,123 @@ export default function Search() {
             const item = results[selectedIndex];
             if (item.isCommand) {
                 const cmd = commands.find((c) => c.id === item.slug);
-                cmd?.action();
+                cmd?.action(router);
             } else {
                 router.push(`/blog/${item.slug}`);
             }
             setIsOpen(false);
+            setQuery("");
         }
     };
 
-    if (!isOpen) return null;
-
     return (
-        <div
-            className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh] px-4 bg-black/40 backdrop-blur-sm"
-            onClick={() => setIsOpen(false)}
-        >
-            <div
-                className="w-full max-w-2xl bg-background border border-border shadow-2xl rounded-xl overflow-hidden"
-                onClick={(e) => e.stopPropagation()}
-            >
-                <div className="flex items-center px-4 border-b border-border">
-                    <input
-                        ref={inputRef}
-                        className="w-full py-4 bg-transparent focus:outline-none text-foreground"
-                        placeholder={isCommandMode ? "Command..." : "Search..."}
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                    />
-                </div>
-                <div className="max-h-[60vh] overflow-y-auto p-2">
-                    {results.map((item, index) => (
-                        <button
-                            key={item.slug}
-                            onClick={() => {
-                                if (item.isCommand) {
-                                    const cmd = commands.find(
-                                        (c) => c.id === item.slug
-                                    );
-                                    cmd?.action();
-                                } else {
-                                    router.push(`/blog/${item.slug}`);
-                                }
-                                setIsOpen(false);
-                            }}
-                            className={`w-full text-left px-4 py-3 rounded-lg flex flex-col gap-1 ${
-                                index === selectedIndex ? "bg-muted/40" : ""
-                            }`}
-                        >
-                            <span className="font-semibold text-foreground">
-                                {item.displayTitle || item.title}
-                            </span>
-                            {item.displaySnippet && (
-                                <span className="text-xs text-muted line-clamp-2">
-                                    {item.displaySnippet}
-                                </span>
+        <AnimatePresence>
+            {isOpen && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh] px-4 bg-background/20 backdrop-blur-md"
+                    onClick={() => {
+                        setIsOpen(false);
+                        setQuery("");
+                    }}
+                >
+                    <motion.div
+                        initial={{ scale: 0.95, opacity: 0, y: -20 }}
+                        animate={{ scale: 1, opacity: 1, y: 0 }}
+                        exit={{ scale: 0.95, opacity: 0, y: -20 }}
+                        transition={{ type: "spring", damping: 20, stiffness: 300 }}
+                        className="w-full max-w-2xl bg-background border border-border shadow-2xl rounded-2xl overflow-hidden"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="flex items-center px-4 border-b border-border bg-muted/5">
+                            <SearchIcon className="h-5 w-5 text-muted ml-2" />
+                            <input
+                                ref={inputRef}
+                                className="w-full py-5 px-4 bg-transparent focus:outline-none text-foreground text-lg"
+                                placeholder={isCommandMode ? "Type a command..." : "Search across the notebook..."}
+                                value={query}
+                                onChange={handleQueryChange}
+                                onKeyDown={handleKeyDown}
+                            />
+                            <div className="flex items-center gap-2 pr-2">
+                                <kbd className="hidden sm:inline-flex h-6 items-center gap-1 rounded border border-border bg-muted/20 px-2 font-mono text-[10px] font-medium text-muted">
+                                    <Command size={10} />K
+                                </kbd>
+                            </div>
+                        </div>
+
+                        <div className="max-h-[60vh] overflow-y-auto p-3 custom-scrollbar">
+                            {results.length > 0 ? (
+                                <div className="grid gap-1">
+                                    {results.map((item, index) => (
+                                        <button
+                                            key={item.slug}
+                                            onClick={() => {
+                                                if (item.isCommand) {
+                                                    const cmd = commands.find(
+                                                        (c) => c.id === item.slug
+                                                    );
+                                                    cmd?.action(router);
+                                                } else {
+                                                    router.push(`/blog/${item.slug}`);
+                                                }
+                                                setIsOpen(false);
+                                                setQuery("");
+                                            }}
+                                            onMouseEnter={() => setSelectedIndex(index)}
+                                            className={`w-full text-left px-4 py-4 rounded-xl flex items-start gap-4 transition-all ${
+                                                index === selectedIndex
+                                                    ? "bg-foreground text-background"
+                                                    : "hover:bg-muted/30 text-foreground"
+                                            }`}
+                                        >
+                                            <div className={`mt-1 p-2 rounded-lg ${
+                                                index === selectedIndex ? "bg-background/20" : "bg-muted/10"
+                                            }`}>
+                                                {item.isCommand ? <Terminal size={18} /> : <FileText size={18} />}
+                                            </div>
+                                            <div className="flex flex-col gap-1 overflow-hidden">
+                                                <span className="font-semibold text-base truncate">
+                                                    {item.displayTitle || item.title}
+                                                </span>
+                                                {(item.displaySnippet || item.description) && (
+                                                    <span className={`text-xs line-clamp-2 leading-relaxed ${
+                                                        index === selectedIndex ? "opacity-80" : "text-muted"
+                                                    }`}>
+                                                        {item.displaySnippet || item.description}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="py-20 text-center">
+                                    <p className="text-muted text-sm italic">
+                                        No results found for &quot;{query}&quot;
+                                    </p>
+                                </div>
                             )}
-                        </button>
-                    ))}
-                </div>
-            </div>
-        </div>
+                        </div>
+
+                        <div className="px-5 py-3 border-t border-border bg-muted/5 flex justify-between items-center">
+                            <span className="text-[10px] text-muted font-bold uppercase tracking-widest">
+                                {results.length} Results
+                            </span>
+                            <div className="flex gap-4 text-[10px] text-muted font-bold uppercase tracking-widest">
+                                <span className="flex items-center gap-1">
+                                    <span className="border border-border rounded px-1">↑↓</span> Navigate
+                                </span>
+                                <span className="flex items-center gap-1">
+                                    <span className="border border-border rounded px-1">↵</span> Open
+                                </span>
+                            </div>
+                        </div>
+                    </motion.div>
+                </motion.div>
+            )}
+        </AnimatePresence>
     );
 }

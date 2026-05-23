@@ -99,7 +99,6 @@ export default function ChaosGraph({ posts }: ChaosGraphProps) {
                     const label = n.title;
                     const fontSize = 12 / globalScale;
                     ctx.font = `${fontSize}px Inter, system-ui, sans-serif`;
-                    const textWidth = ctx.measureText(label).width;
 
                     // Draw node circle
                     ctx.beginPath();

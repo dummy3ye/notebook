@@ -5,6 +5,7 @@ import { Marked } from "marked";
 import markedKatex from "marked-katex-extension";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import TableOfContents from "@/components/TableOfContents";
 import { getHighlighter } from "@/lib/shiki";
 import ClientHydration from "@/components/ClientHydration";
@@ -209,9 +210,13 @@ export default async function BlogPost({
                     <div className="sticky top-20 flex flex-col gap-4">
                         <Link
                             href="/"
-                            className="text-sm font-medium text-muted hover:text-foreground transition-colors"
+                            className="group flex items-center gap-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
                         >
-                            ← Back
+                            <ArrowLeft
+                                size={16}
+                                className="transition-transform group-hover:-translate-x-1"
+                            />
+                            Back
                         </Link>
                         <div className="mt-8 flex flex-col gap-1">
                             <span className="text-xs font-semibold uppercase tracking-widest text-muted">
