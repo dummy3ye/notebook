@@ -1,5 +1,5 @@
 ---
-title: Vincent van Gogh: The Starry Night
+title: "Vincent van Gogh: The Starry Night"
 date: May 23, 2026
 tags: ["art", "post-impressionism", "astronomy", "vanguard"]
 ---

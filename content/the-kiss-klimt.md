@@ -1,5 +1,5 @@
 ---
-title: Gustav Klimt: The Kiss
+title: "Gustav Klimt: The Kiss"
 date: May 23, 2026
 tags: ["art", "vienna", "symbolism", "gold"]
 ---

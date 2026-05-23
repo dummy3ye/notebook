@@ -1,5 +1,5 @@
 ---
-title: TWISTEX: The Final Chase
+title: "TWISTEX: The Final Chase"
 date: May 23, 2026
 tags: ["weather", "oklahoma", "biography", "tragedy"]
 ---

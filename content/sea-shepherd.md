@@ -1,5 +1,5 @@
 ---
-title: Sea Shepherd: Neptune's Pirates
+title: "Sea Shepherd: Neptune's Pirates"
 date: May 23, 2026
 tags: ["conservation", "ocean", "activism", "controversy"]
 ---

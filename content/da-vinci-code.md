@@ -1,5 +1,5 @@
 ---
-title: The Da Vinci Code: Fact vs. Fiction
+title: "The Da Vinci Code: Fact vs. Fiction"
 date: May 23, 2026
 tags: ["literature", "conspiracy", "art-history", "religion"]
 ---

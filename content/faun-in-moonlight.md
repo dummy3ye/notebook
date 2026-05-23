@@ -1,5 +1,5 @@
 ---
-title: Léon Spilliaert: Faun in Moonlight
+title: "Léon Spilliaert: Faun in Moonlight"
 date: May 23, 2026
 tags: ["art", "symbolism", "mystery", "belgium"]
 ---

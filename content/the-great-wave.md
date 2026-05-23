@@ -1,5 +1,5 @@
 ---
-title: Hokusai: The Great Wave off Kanagawa
+title: "Hokusai: The Great Wave off Kanagawa"
 date: May 23, 2026
 tags: ["art", "japan", "hokusai", "nature"]
 ---

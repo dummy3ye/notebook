@@ -1,5 +1,5 @@
 ---
-title: Franklin's Lost Expedition: Terror and Erebus
+title: "Franklin's Lost Expedition: Terror and Erebus"
 date: May 23, 2026
 tags: ["history", "arctic", "exploration", "mystery"]
 ---

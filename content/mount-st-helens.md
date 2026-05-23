@@ -1,5 +1,5 @@
 ---
-title: Mount St. Helens: The Day the Mountain Exploded
+title: "Mount St. Helens: The Day the Mountain Exploded"
 date: May 23, 2026
 tags: ["geology", "volcano", "disaster", "washington"]
 ---

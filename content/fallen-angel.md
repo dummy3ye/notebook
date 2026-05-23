@@ -1,5 +1,5 @@
 ---
-title: Alexandre Cabanel: The Fallen Angel
+title: "Alexandre Cabanel: The Fallen Angel"
 date: May 23, 2026
 tags: ["art", "romanticism", "mythology", "lucifer"]
 ---

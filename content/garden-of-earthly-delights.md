@@ -1,5 +1,5 @@
 ---
-title: Hieronymus Bosch: The Garden of Earthly Delights
+title: "Hieronymus Bosch: The Garden of Earthly Delights"
 date: May 23, 2026
 tags: ["art", "renaissance", "surrealism", "morality"]
 ---

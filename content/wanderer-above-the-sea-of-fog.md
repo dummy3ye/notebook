@@ -1,5 +1,5 @@
 ---
-title: Caspar David Friedrich: Wanderer above the Sea of Fog
+title: "Caspar David Friedrich: Wanderer above the Sea of Fog"
 date: May 23, 2026
 tags: ["art", "romanticism", "germany", "philosophy"]
 ---

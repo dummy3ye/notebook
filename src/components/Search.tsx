@@ -114,6 +114,7 @@ export default function Search() {
                     isCommand: false,
                     displayTitle: highlightText(p.title, query),
                     displaySnippet: snippet,
+                    description: null,
                 };
             });
         }
