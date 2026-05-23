@@ -4,7 +4,7 @@ date: May 23, 2026
 tags: ["art", "symbolism", "mystery", "belgium"]
 ---
 
-![Faun in Moonlight by Léon Spilliaert](https://upload.wikimedia.org/wikipedia/commons/2/25/L%C3%A9on_Spilliaert_%281910%29_-_Faun_bij_maneschijn.jpg)
+![Faun in Moonlight by Léon Spilliaert](https://upload.wikimedia.org/wikipedia/commons/a/ab/L%C3%A9on_Spilliaert_%281900%29_-_Faun_bij_maneschijn.jpg)
 
 Léon Spilliaert’s *Faun in Moonlight* (1910) is a haunting masterpiece of Belgian Symbolism. Characterized by a sense of existential loneliness and "the uncanny," Spilliaert’s work often feels more aligned with modern "Weird Fiction" than with the traditional art of his time.
 

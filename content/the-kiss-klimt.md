@@ -4,7 +4,7 @@ date: May 23, 2026
 tags: ["art", "vienna", "symbolism", "gold"]
 ---
 
-![The Kiss by Gustav Klimt](https://upload.wikimedia.org/wikipedia/commons/4/40/Klimt_-_The_Kiss.jpg)
+![The Kiss by Gustav Klimt](https://upload.wikimedia.org/wikipedia/commons/4/40/The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg)
 
 Gustav Klimt’s *The Kiss* (1907–1908) is the definitive masterpiece of his "Golden Phase." It represents a synthesis of diverse artistic influences—from Byzantine mosaics to Japanese prints—to create a universal allegory of love, intimacy, and the merging of the spiritual and physical worlds.
 
