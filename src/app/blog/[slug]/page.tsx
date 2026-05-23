@@ -184,6 +184,37 @@ export default async function BlogPost({
                 </div>
               `;
             },
+            image({ href, title, text }) {
+                return `
+                <figure class="my-12 not-prose">
+                  <img 
+                    src="${href}" 
+                    alt="${text}" 
+                    title="${title || ""}" 
+                    class="rounded-xl mx-auto block max-w-full h-auto shadow-2xl" 
+                    loading="lazy" 
+                    decoding="async"
+                    crossorigin="anonymous"
+                    referrerpolicy="no-referrer-when-downgrade"
+                  />
+                  ${
+                      text
+                          ? `<figcaption class="mt-4 text-center text-sm text-muted italic">${text}</figcaption>`
+                          : ""
+                  }
+                </figure>
+              `;
+            },
+            paragraph({ tokens }) {
+                const content = this.parser.parseInline(tokens);
+                if (
+                    content.trim().startsWith("<figure") ||
+                    content.trim().startsWith("<img")
+                ) {
+                    return content;
+                }
+                return `<p>${content}</p>`;
+            },
         },
     });
 
@@ -245,7 +276,6 @@ export default async function BlogPost({
     [&>h4]:text-xl [&>h4]:font-semibold [&>h4]:mt-10 [&>h4]:mb-4
     [&>p]:text-lg [&>p]:leading-8 [&>p]:mb-8 [&>p]:text-muted
     [&>ul]:text-muted [&>ol]:text-muted
-    [&_img]:rounded-xl [&_img]:my-12
     [&_.katex-display]:my-10 [&_.katex-display]:overflow-x-auto [&_.katex-display]:py-2"
                     >
                         <div
