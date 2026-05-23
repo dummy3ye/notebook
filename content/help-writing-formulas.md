@@ -1,6 +1,7 @@
 ---
 title: Help with Writing Formulas and Equations
 date: May 17, 2026
+tags: ["meta", "math", "latex"]
 ---
 
 This guide provides a comprehensive overview of how to write mathematical notation in **Notebook** using LaTeX syntax powered by the KaTeX engine.

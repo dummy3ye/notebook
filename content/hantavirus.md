@@ -1,6 +1,7 @@
 ---
 title: Hantavirus - Understanding the Viral Threat
 date: May 19, 2026
+tags: ["science", "virology", "biology"]
 ---
 
 # Hantavirus

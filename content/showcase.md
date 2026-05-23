@@ -1,6 +1,7 @@
 ---
 title: Engine Showcase - Syntax and Math
 date: May 18, 2026
+tags: ["meta", "engine", "math"]
 ---
 
 This post validates the rendering engine, showcasing **Shiki**-powered syntax highlighting and **KaTeX** math integration.

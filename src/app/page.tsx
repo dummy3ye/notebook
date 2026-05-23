@@ -1,13 +1,14 @@
 import fs from "fs/promises";
 import path from "path";
 import fm from "front-matter";
-import Link from "next/link";
 import SearchButton from "@/components/SearchButton";
+import ChaosGraphWrapper from "@/components/ChaosGraphWrapper";
 
 interface PostData {
     title: string;
     date: string;
     draft?: boolean;
+    tags?: string[];
 }
 
 interface PostEntry {
@@ -15,6 +16,7 @@ interface PostEntry {
     title: string;
     date: string;
     draft?: boolean;
+    tags: string[];
 }
 
 async function getPosts(): Promise<PostEntry[]> {
@@ -33,11 +35,11 @@ async function getPosts(): Promise<PostEntry[]> {
                     title: attributes.title,
                     date: attributes.date,
                     draft: attributes.draft || false,
+                    tags: attributes.tags || [],
                 };
             })
     );
 
-    // Sort by date descending and filter out drafts
     return posts
         .filter((post) => !post.draft)
         .sort(
@@ -49,47 +51,31 @@ export default async function Home() {
     const posts = await getPosts();
 
     return (
-        <div className="flex flex-col flex-1 items-center px-6 py-24 sm:px-12">
-            <main className="w-full max-w-2xl">
-                <header className="mb-20">
-                    <div className="flex justify-between items-start">
-                        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+        <div className="flex flex-col min-h-screen">
+            <header className="px-6 py-12 sm:px-12 border-b border-border bg-background/50 backdrop-blur-md sticky top-0 z-50">
+                <div className="max-w-7xl mx-auto flex justify-between items-center">
+                    <div>
+                        <h1 className="text-2xl font-bold tracking-tight text-foreground">
                             Notebook.
                         </h1>
-                        <SearchButton />
+                        <p className="text-sm text-muted">
+                            Chaos View: Exploring the connections between
+                            thoughts.
+                        </p>
                     </div>
-                    <p className="mt-4 text-lg text-muted max-w-lg">
-                        So this is where I write about my thoughts, theories,
-                        discoveries, basically everything that I do and love
-                        about science.
-                    </p>
-                </header>
+                    <SearchButton />
+                </div>
+            </header>
 
-                <section className="flex flex-col gap-12">
-                    {posts.map((post) => (
-                        <article
-                            key={post.slug}
-                            className="group relative flex flex-col items-start"
-                        >
-                            <time className="text-sm text-muted mb-2">
-                                {post.date}
-                            </time>
-                            <h2 className="text-xl font-semibold tracking-tight text-foreground group-hover:text-muted transition-colors">
-                                <Link href={`/blog/${post.slug}`}>
-                                    <span className="absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl" />
-                                    <span className="relative z-10">
-                                        {post.title}
-                                    </span>
-                                </Link>
-                            </h2>
-                        </article>
-                    ))}
-                </section>
-
-                {posts.length === 0 && (
-                    <p className="text-muted italic">
-                        No posts found in the content directory.
-                    </p>
+            <main className="flex-1 relative overflow-hidden bg-background">
+                {posts.length > 0 ? (
+                    <ChaosGraphWrapper posts={posts} />
+                ) : (
+                    <div className="flex items-center justify-center h-full p-24">
+                        <p className="text-muted italic">
+                            No posts found in the content directory.
+                        </p>
+                    </div>
                 )}
             </main>
         </div>

@@ -1,6 +1,7 @@
 ---
 title: An local cli-level environment manager for storing multiple user and .env
 date: May 18, 2026
+tags: ["cli", "tool", "security", "shell"]
 ---
 
 # rvenv

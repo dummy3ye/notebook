@@ -1,6 +1,7 @@
 ---
 title: The Great Sleep - A Theory on Reality as an Unbroken Dream State
 date: August 13, 2024
+tags: ["theory", "philosophy", "consciousness"]
 ---
 
 ### Abstract

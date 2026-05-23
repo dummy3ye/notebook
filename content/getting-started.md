@@ -1,6 +1,7 @@
 ---
 title: Getting Started with Notebook
 date: May 17, 2026
+tags: ["meta", "tutorial", "science"]
 ---
 
 Welcome to Notebook.

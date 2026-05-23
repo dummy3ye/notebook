@@ -14,6 +14,7 @@ interface PostData {
     date: string;
     draft?: boolean;
     description?: string;
+    tags?: string[];
 }
 
 interface PostEntry {
@@ -21,6 +22,7 @@ interface PostEntry {
     title: string;
     date: string;
     draft?: boolean;
+    tags: string[];
 }
 
 interface Heading {
@@ -45,6 +47,7 @@ async function getSortedPosts(): Promise<PostEntry[]> {
                     title: attributes.title,
                     date: attributes.date,
                     draft: attributes.draft || false,
+                    tags: attributes.tags || [],
                 };
             })
     );

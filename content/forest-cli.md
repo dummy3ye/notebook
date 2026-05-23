@@ -1,6 +1,7 @@
 ---
 title: Forest - idle 2d moving detailed forest written in C
 date: May 18, 2026
+tags: ["cli", "graphics", "c", "simulation"]
 ---
 
 # Forest
